@@ -20,6 +20,7 @@ public:
 	Map(int size);
 	virtual ~Map();
 	void createEmpty();
+	void createRandom(double fracImpassable);
 	bool placePlayer(int r, int c);
 	bool movePlayerLeft();
 	bool movePlayerRight();

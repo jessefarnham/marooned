@@ -7,6 +7,8 @@
 
 #include "Map.h"
 #include "BareGround.h"
+#include "ImpassableTerrain.h"
+#include "util.h"
 
 const int TILE_SIZE = 10;
 
@@ -23,6 +25,23 @@ void Map::createEmpty() {
 			state[r][c] = std::move(bareGround);
 		}
 	}
+}
+
+void Map::createRandom(double fracImpassable) {
+	state.resize(size);
+		for (int r = 0; r < size; r++) {
+			state[r].resize(size);
+			for (int c = 0; c < size; c++) {
+				std::unique_ptr<GameItem> gameObj;
+				if (util::randFloat() < fracImpassable) {
+					gameObj = std::make_unique<ImpassableTerrain>();
+				}
+				else {
+					gameObj = std::make_unique<BareGround>();
+				}
+				state[r][c] = std::move(gameObj);
+			}
+		}
 }
 
 bool Map::placePlayer(int r, int c) {

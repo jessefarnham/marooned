@@ -12,6 +12,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
+#include <cstdlib>
 #include "Map.h"
 #include "TextureLoader.h"
 
@@ -22,6 +23,8 @@ const int SCREEN_HEIGHT = 480;
 const int MAP_SIZE = 20;
 
 const int FONT_SIZE = 12;
+
+const double FRAC_IMPASSABLE = 0.2;
 
 //Starts up SDL and creates window
 bool init();
@@ -122,6 +125,8 @@ void close()
 
 int main( int argc, char* args[] )
 {
+	srand((unsigned)0);
+
 	//Start up SDL and create window
 	if( !init() )
 	{
@@ -136,7 +141,7 @@ int main( int argc, char* args[] )
 		SDL_Event e;
 
 		Map map(MAP_SIZE);
-		map.createEmpty();
+		map.createRandom(FRAC_IMPASSABLE);
 		map.placePlayer(MAP_SIZE / 2, MAP_SIZE / 2);
 		TextureLoader textureLoader(gRenderer, gFont);
 

@@ -21,10 +21,16 @@ public:
 	virtual ~Map();
 	void createEmpty();
 	bool placePlayer(int r, int c);
+	bool movePlayerLeft();
+	bool movePlayerRight();
+	bool movePlayerUp();
+	bool movePlayerDown();
 	void render(TextureLoader&);
 	std::pair<int, int> playerLoc;
 
 private:
+	bool isInBounds(std::pair<int, int>);
+	bool tryMovePlayer(std::pair<int, int>);
 	std::vector<std::vector<std::unique_ptr<GameItem>>> state;
 	int size;
 };

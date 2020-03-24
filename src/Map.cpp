@@ -54,6 +54,40 @@ void Map::render(TextureLoader& textureLoader){
   }
 }
 
+bool Map::movePlayerLeft() {
+	auto newLoc = std::make_pair(playerLoc.first, playerLoc.second - 1);
+	return tryMovePlayer(newLoc);
+}
+
+bool Map::movePlayerRight() {
+	auto newLoc = std::make_pair(playerLoc.first, playerLoc.second + 1);
+	return tryMovePlayer(newLoc);
+}
+
+bool Map::movePlayerUp() {
+	auto newLoc = std::make_pair(playerLoc.first - 1, playerLoc.second);
+	return tryMovePlayer(newLoc);
+}
+
+bool Map::movePlayerDown() {
+	auto newLoc = std::make_pair(playerLoc.first + 1, playerLoc.second);
+	return tryMovePlayer(newLoc);
+}
+
+bool Map::tryMovePlayer(std::pair<int, int> newLoc) {
+	if (isInBounds(newLoc) && state[newLoc.first][newLoc.second]->getStandable()) {
+			placePlayer(newLoc.first, newLoc.second);
+			return true;
+		}
+		else {
+			return false;
+		}
+}
+
+bool Map::isInBounds(std::pair<int ,int> loc) {
+	return (loc.first >= 0 && loc.first < size && loc.second >= 0 && loc.second < size);
+}
+
 Map::~Map() {
 }
 

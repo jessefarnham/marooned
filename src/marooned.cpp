@@ -135,6 +135,11 @@ int main( int argc, char* args[] )
 		//Event handler
 		SDL_Event e;
 
+		Map map(MAP_SIZE);
+		map.createEmpty();
+		map.placePlayer(MAP_SIZE / 2, MAP_SIZE / 2);
+		TextureLoader textureLoader(gRenderer, gFont);
+
 		//While application is running
 		while( !quit )
 		{
@@ -146,16 +151,27 @@ int main( int argc, char* args[] )
 				{
 					quit = true;
 				}
+				else if (e.type == SDL_KEYDOWN) {
+					switch(e.key.keysym.sym) {
+					case SDLK_UP:
+						map.movePlayerUp();
+						break;
+					case SDLK_DOWN:
+						map.movePlayerDown();
+						break;
+					case SDLK_LEFT:
+						map.movePlayerLeft();
+						break;
+					case SDLK_RIGHT:
+						map.movePlayerRight();
+						break;
+					}
+				}
 			}
 
 			//Clear screen
 			SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
 			SDL_RenderClear( gRenderer );
-
-			Map map(MAP_SIZE);
-			map.createEmpty();
-			map.placePlayer(MAP_SIZE / 2, MAP_SIZE / 2);
-			TextureLoader textureLoader(gRenderer, gFont);
 
 			//Top viewport
 			SDL_Rect topViewport;

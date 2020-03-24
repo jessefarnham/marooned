@@ -19,7 +19,7 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-const int MAP_SIZE = 50;
+const int MAP_SIZE = 20;
 
 const int FONT_SIZE = 12;
 
@@ -154,6 +154,7 @@ int main( int argc, char* args[] )
 
 			Map map(MAP_SIZE);
 			map.createEmpty();
+			map.placePlayer(MAP_SIZE / 2, MAP_SIZE / 2);
 			TextureLoader textureLoader(gRenderer, gFont);
 
 			//Top viewport

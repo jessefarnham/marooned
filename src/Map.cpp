@@ -36,13 +36,20 @@ bool Map::placePlayer(int r, int c) {
 }
 
 void Map::render(TextureLoader& textureLoader){
+  Texture& playerTexture = textureLoader.getPersistedTextureWithName("player");
   for (int r = 0; r < size; r++) {
 	  for (int c = 0; c < size; c++) {
 		  int locR = r * TILE_SIZE;
 		  int locC = c * TILE_SIZE;
-		  GameItem& itemAtLoc = *state[r][c];
-		  Texture& texture = textureLoader.getPersistedTextureWithName(itemAtLoc.getTextureName());
-		  texture.render(locC, locR, TILE_SIZE - 1, TILE_SIZE - 1, 0., NULL, SDL_FLIP_NONE);
+		  Texture* textureToRender;
+		  if (playerLoc == std::make_pair(r, c)){
+			  textureToRender = &playerTexture;
+		  }
+		  else {
+			  GameItem& itemAtLoc = *state[r][c];
+			  textureToRender = &textureLoader.getPersistedTextureWithName(itemAtLoc.getTextureName());
+		  }
+		  textureToRender->render(locC, locR, TILE_SIZE - 1, TILE_SIZE - 1, 0., NULL, SDL_FLIP_NONE);
 	  }
   }
 }

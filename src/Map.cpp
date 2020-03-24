@@ -8,7 +8,7 @@
 #include "Map.h"
 #include "BareGround.h"
 
-const int TILE_SIZE = 20;
+const int TILE_SIZE = 10;
 
 Map::Map(int size) {
 	this->size = size;
@@ -36,17 +36,14 @@ bool Map::placePlayer(int r, int c) {
 }
 
 void Map::render(TextureLoader& textureLoader){
-  int locR = 0;
-  int locC = 0;
   for (int r = 0; r < size; r++) {
 	  for (int c = 0; c < size; c++) {
+		  int locR = r * TILE_SIZE;
+		  int locC = c * TILE_SIZE;
 		  GameItem& itemAtLoc = *state[r][c];
-		  Texture texture = textureLoader.getPersistedTextureWithName(itemAtLoc.getTextureName());
-		  texture.render(locC + 1, locR + 1, locC + TILE_SIZE - 1, locR + TILE_SIZE - 1, 0., NULL, SDL_FLIP_NONE);
-		  locC += TILE_SIZE;
+		  Texture& texture = textureLoader.getPersistedTextureWithName(itemAtLoc.getTextureName());
+		  texture.render(locC, locR, TILE_SIZE - 1, TILE_SIZE - 1, 0., NULL, SDL_FLIP_NONE);
 	  }
-	  locR += TILE_SIZE;
-	  locC = 0;
   }
 }
 

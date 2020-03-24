@@ -12,6 +12,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <assert.h>
+#include <stdio.h>
 
 /*#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -95,7 +97,7 @@ bool Texture::loadFromRenderedText( std::string textureText, SDL_Color textColor
         mTexture = SDL_CreateTextureFromSurface( renderer, textSurface );
 		if( mTexture == NULL )
 		{
-			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+			printf( "Unable to create texture from rendered text! SDL_image Error: %s\n", IMG_GetError() );
 		}
 		else
 		{
@@ -136,7 +138,10 @@ void Texture::render( int x, int y, int w, int h, double angle, SDL_Point* cente
 	SDL_Rect renderQuad = { x, y, w, h };
 
 	//Render to screen
-	SDL_RenderCopyEx( renderer, mTexture, NULL, &renderQuad, angle, center, flip );
+	int failure = SDL_RenderCopy( renderer, mTexture, NULL, &renderQuad);
+	if (failure) {
+		printf("Unable to render texture! SDLError: %s\n", SDL_GetError() );
+	}
 }
 
 int Texture::getWidth()

@@ -7,9 +7,13 @@
 
 #include "Bolts.h"
 
-Bolts::Bolts() {
-	// TODO Auto-generated constructor stub
+Bolts::Bolts(int n, double weightPer) {
+	this->n = n;
+	this->weightPer = weightPer;
+}
 
+double Bolts::getWeight() {
+	return n * weightPer;
 }
 
 Bolts::~Bolts() {

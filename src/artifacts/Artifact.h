@@ -8,13 +8,14 @@
 #ifndef ARTIFACT_H_
 #define ARTIFACT_H_
 
-#include "GameItem.h"
+#include "../GameItem.h"
 
 class Artifact: public GameItem {
 public:
 	Artifact();
 	virtual std::string getTextureName();
 	virtual bool getStandable();
+	virtual double getWeight() = 0;
 	virtual ~Artifact();
 };
 

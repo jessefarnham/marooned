@@ -12,11 +12,11 @@ Artifact::Artifact() {
 
 }
 
-virtual std::string Artifact::getTextureName(){
+std::string Artifact::getTextureName(){
 	return "artifact";
 }
 
-virtual bool Artifact::getStandable(){
+bool Artifact::getStandable(){
 	return true;
 }
 

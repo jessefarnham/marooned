@@ -12,8 +12,13 @@
 
 class Bolts: public Artifact {
 public:
-	Bolts();
+	Bolts(int n, double weightPer);
+	virtual double getWeight() = 0;
 	virtual ~Bolts();
+
+private:
+	int n;
+	double weightPer;
 };
 
 #endif /* ARTIFACTS_BOLTS_H_ */

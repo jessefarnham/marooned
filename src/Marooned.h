@@ -32,25 +32,27 @@ public:
 
 private:
 	unsigned int randseed;
+	double fracImpassable;
 
-	const int SCREEN_WIDTH = 480;
-	const int SCREEN_HEIGHT = 640;
-	const int MAP_SIZE = 100;
-	const int VISIBLE_MAP_SIZE = 50;
-	const int FONT_SIZE = 12;
-	const double FRAC_IMPASSABLE = 0.2;
-	const int MESSAGE_QUEUE_SIZE = 10;
-	const std::string SAVE_FILE = "savegame.txt";
+	const std::string CONFIG_FILE = "config.txt";
+	int SCREEN_WIDTH;
+	int SCREEN_HEIGHT;
+	int MAP_SIZE;
+	int VISIBLE_MAP_SIZE;
+	int FONT_SIZE;
+	int MESSAGE_QUEUE_SIZE;
+	int TILE_SIZE;
+	std::string SAVE_FILE;
 
 	SDL_Window* gWindow = NULL;
 	SDL_Renderer* gRenderer = NULL;
 	TTF_Font* gFont = NULL;
-
 	std::unique_ptr<Map> map;
 	std::unique_ptr<MessageQueue> mq;
 
 	void save();
 	void load();
+	void initConfig();
 };
 
 #endif /* MAROONED_H_ */

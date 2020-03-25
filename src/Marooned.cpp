@@ -10,6 +10,7 @@
 
 
 #include <fstream>
+#include <unordered_map>
 #include "Marooned.h"
 #include "Map.h"
 #include "MessageQueue.h"
@@ -17,6 +18,7 @@
 Marooned::Marooned(unsigned int randseed) {
 	this->randseed = randseed;
 	srand(randseed);
+	initConfig();
 }
 
 bool Marooned::initSDL()
@@ -88,8 +90,8 @@ bool Marooned::initSDL()
 }
 
 void Marooned::initGame(){
-	map = std::make_unique<Map>(MAP_SIZE, VISIBLE_MAP_SIZE);
-	map->createRandom(FRAC_IMPASSABLE);
+	map = std::make_unique<Map>(MAP_SIZE, VISIBLE_MAP_SIZE, TILE_SIZE);
+	map->createRandom(fracImpassable);
 	int tryPlayerR = MAP_SIZE / 2;
 	int tryPlayerC = MAP_SIZE / 2;
 	while (!map->placePlayer(tryPlayerR, tryPlayerC)){
@@ -102,6 +104,35 @@ void Marooned::initGame(){
 	mq = std::make_unique<MessageQueue>(MESSAGE_QUEUE_SIZE);
 
 }
+
+void Marooned::initConfig(){
+	std::ifstream in(CONFIG_FILE);
+	std::string key;
+	std::string value;
+	std::unordered_map<std::string, std::string> configs;
+	if (in.is_open()){
+		while (!in.eof()){
+			std::getline(in, key);
+			std::getline(in, value);
+			configs.insert(std::make_pair(key, value));
+		}
+		in.close();
+		SCREEN_WIDTH = std::stoi(configs["SCREEN_WIDTH"]);
+		SCREEN_HEIGHT = std::stoi(configs["SCREEN_HEIGHT"]);
+		MAP_SIZE = std::stoi(configs["MAP_SIZE"]);
+		VISIBLE_MAP_SIZE = std::stoi(configs["VISIBLE_MAP_SIZE"]);
+		FONT_SIZE = std::stoi(configs["FONT_SIZE"]);
+		MESSAGE_QUEUE_SIZE = std::stoi(configs["MESSAGE_QUEUE_SIZE"]);
+		SAVE_FILE = configs["SAVE_FILE"];
+		TILE_SIZE = std::stoi(configs["TILE_SIZE"]);
+
+		fracImpassable = std::stod(configs["fracImpassable"]);
+	}
+	else {
+		throw "Could not load config file " + CONFIG_FILE;
+	}
+}
+
 
 void Marooned::close()
 {
@@ -214,6 +245,7 @@ void Marooned::mainLoop(){
 void Marooned::saveState(std::ofstream& out) {
 	out << "Marooned\n";
 	out << randseed << "\n";
+	out << fracImpassable << "\n";
 	map->saveState(out);
 	mq->saveState(out);
 }
@@ -221,9 +253,12 @@ void Marooned::saveState(std::ofstream& out) {
 void Marooned::loadState(std::ifstream& in) {
 	std::string line;
 	int randseed;
+	int fracImpassable;
 	getline(in, line); //header
 	in >> randseed;
+	in >> fracImpassable;
 	this->randseed = randseed;
+	this->fracImpassable = fracImpassable;
 	getline(in, line); //trailing newline
 	map->loadState(in);
 }

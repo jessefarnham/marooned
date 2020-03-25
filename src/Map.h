@@ -18,7 +18,7 @@
 
 class Map : public Serializable {
 public:
-	Map(int size, int visibleSize);
+	Map(int size, int visibleSize, int tileSize);
 	virtual ~Map();
 	void createEmpty();
 	void createRandom(double fracImpassable);
@@ -38,6 +38,7 @@ private:
 	std::vector<std::vector<std::unique_ptr<GameItem>>> state;
 	int size;
 	int visibleSize;
+	int tileSize;
 };
 
 #endif /* SRC_MAP_H_ */

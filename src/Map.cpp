@@ -10,11 +10,11 @@
 #include "ImpassableTerrain.h"
 #include "util.h"
 
-const int TILE_SIZE = 10;
 
-Map::Map(int size, int visibleSize) {
+Map::Map(int size, int visibleSize, int tileSize) {
 	this->size = size;
 	this->visibleSize = visibleSize;
+	this->tileSize = tileSize;
 }
 
 void Map::createEmpty() {
@@ -59,8 +59,8 @@ void Map::render(TextureLoader& textureLoader){
   Texture& playerTexture = textureLoader.getPersistedTextureWithName("player");
   for (int r = 0; r < visibleSize; r++) {
 	  for (int c = 0; c < visibleSize; c++) {
-		  int locR = r * TILE_SIZE;
-		  int locC = c * TILE_SIZE;
+		  int locR = r * tileSize;
+		  int locC = c * tileSize;
 		  int mapR = playerLoc.first - (visibleSize / 2) + r;
 		  int mapC = playerLoc.second - (visibleSize / 2) + c;
 		  auto mapLoc = std::make_pair(mapR, mapC);
@@ -76,7 +76,7 @@ void Map::render(TextureLoader& textureLoader){
 			  textureToRender = NULL;
 		  }
 		  if (textureToRender){
-			  textureToRender->render(locC, locR, TILE_SIZE - 1, TILE_SIZE - 1);
+			  textureToRender->render(locC, locR, tileSize - 1, tileSize - 1);
 		  }
 	  }
   }

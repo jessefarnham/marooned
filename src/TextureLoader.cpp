@@ -21,7 +21,7 @@ TextureLoader::~TextureLoader() {
 Texture& TextureLoader::getPersistedTextureWithName(std::string name) {
 	if (!imgTextures.count(name)) {
 		auto newTexture = std::make_unique<Texture>(renderer, font);
-		newTexture->loadFromFile("/home/jesse/dev/marooned/textures/" + name + ".bmp");
+		newTexture->loadFromFile("./textures/" + name + ".bmp");
 		imgTextures.insert(std::make_pair(name.c_str(), std::move(newTexture)));
 	}
 	return *imgTextures[name];

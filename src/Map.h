@@ -13,9 +13,10 @@
 #include <utility>
 #include <memory>
 #include "TextureLoader.h"
+#include "Serializable.h"
 
 
-class Map {
+class Map : public Serializable {
 public:
 	Map(int size, int visibleSize);
 	virtual ~Map();
@@ -27,6 +28,8 @@ public:
 	bool movePlayerUp();
 	bool movePlayerDown();
 	void render(TextureLoader&);
+	void saveState(std::ofstream);
+	void loadState(std::ifstream);
 	std::pair<int, int> playerLoc;
 
 private:

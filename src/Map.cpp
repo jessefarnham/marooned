@@ -116,6 +116,14 @@ bool Map::isInBounds(std::pair<int ,int> loc) {
 	return (loc.first >= 0 && loc.first < size && loc.second >= 0 && loc.second < size);
 }
 
+void Map::saveState(std::ofstream out) {
+
+}
+
+void Map::loadState(std::ifstream in) {
+
+}
+
 Map::~Map() {
 }
 

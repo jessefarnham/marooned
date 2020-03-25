@@ -50,7 +50,6 @@ private:
 	std::unique_ptr<MessageQueue> mq;
 
 	void save();
-
 	void load();
 };
 

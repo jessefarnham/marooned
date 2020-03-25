@@ -91,7 +91,7 @@ bool Marooned::initSDL()
 
 void Marooned::initGame(){
 	map = std::make_unique<Map>(MAP_SIZE, VISIBLE_MAP_SIZE, TILE_SIZE);
-	map->createRandom(fracImpassable, fracArtifact);
+	map->createRandom(fracImpassable, FRAC_ARTIFACT);
 	int tryPlayerR = MAP_SIZE / 2;
 	int tryPlayerC = MAP_SIZE / 2;
 	while (!map->placePlayer(tryPlayerR, tryPlayerC)){
@@ -125,9 +125,9 @@ void Marooned::initConfig(){
 		MESSAGE_QUEUE_SIZE = std::stoi(configs["MESSAGE_QUEUE_SIZE"]);
 		SAVE_FILE = configs["SAVE_FILE"];
 		TILE_SIZE = std::stoi(configs["TILE_SIZE"]);
+		FRAC_ARTIFACT = std::stod(configs["FRAC_ARTIFACT"]);
 
 		fracImpassable = std::stod(configs["fracImpassable"]);
-		fracArtifact = std::stod(configs["fracArtifact"]);
 	}
 	else {
 		throw "Could not load config file " + CONFIG_FILE;
@@ -198,6 +198,9 @@ void Marooned::mainLoop(){
 					if (ctrlDown){
 						load();
 					}
+					break;
+				case SDLK_e:
+					map->examine(*mq);
 					break;
 				}
 			}

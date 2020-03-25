@@ -20,6 +20,10 @@ bool BareGround::getStandable() {
 	return true;
 }
 
+std::string BareGround::getDescription() {
+	return "Bare ground.";
+}
+
 std::string BareGround::getTextureName() {
 	return "bareGround";
 }

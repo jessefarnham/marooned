@@ -20,6 +20,10 @@ std::string ImpassableTerrain::getTextureName(){
 	return "impassableTerrain";
 }
 
+std::string ImpassableTerrain::getDescription(){
+	return "Impassable terrain.";
+}
+
 ImpassableTerrain::~ImpassableTerrain() {
 	// TODO Auto-generated destructor stub
 }

@@ -14,6 +14,7 @@
 #include <memory>
 #include "TextureLoader.h"
 #include "Serializable.h"
+#include "MessageQueue.h"
 
 
 class Map : public Serializable {
@@ -30,6 +31,7 @@ public:
 	void render(TextureLoader&);
 	void saveState(std::ofstream& file);
 	void loadState(std::ifstream& file);
+	void examine(MessageQueue& mq);
 	std::pair<int, int> playerLoc;
 
 private:

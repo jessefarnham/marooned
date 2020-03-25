@@ -15,6 +15,7 @@ public:
 	ImpassableTerrain();
 	std::string getTextureName();
 	virtual bool getStandable();
+	virtual std::string getDescription();
 	virtual ~ImpassableTerrain();
 };
 

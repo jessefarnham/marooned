@@ -173,6 +173,14 @@ void Map::loadState(std::ifstream& in) {
 	placePlayer(playerR, playerC);
 }
 
+void Map::examine(MessageQueue& mq){
+	mq.postMessage("You see the following:");
+	auto& itemVector = state[playerLoc.first][playerLoc.second];
+	for (auto it = itemVector.begin(); it != itemVector.end(); it++) {
+		mq.postMessage((*it)->getDescription());
+	}
+}
+
 Map::~Map() {
 }
 

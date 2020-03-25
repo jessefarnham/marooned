@@ -14,6 +14,7 @@ class Bolts: public Artifact {
 public:
 	Bolts(int n, double weightPer);
 	virtual double getWeight();
+	virtual std::string getDescription();
 	virtual ~Bolts();
 
 private:

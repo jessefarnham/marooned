@@ -24,6 +24,10 @@ int Artifact::getDrawPriority(){
 	return 1; //artifacts always draw with higher priority than terrain
 }
 
+std::string Artifact::getDescription(){
+	return "A mysterious artifact from an unknown alien race.";
+}
+
 Artifact::~Artifact() {
 	// TODO Auto-generated destructor stub
 }

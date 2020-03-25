@@ -33,7 +33,6 @@ public:
 private:
 	unsigned int randseed;
 	double fracImpassable;
-	double fracArtifact;
 
 	const std::string CONFIG_FILE = "config.txt";
 	int SCREEN_WIDTH;
@@ -44,6 +43,7 @@ private:
 	int MESSAGE_QUEUE_SIZE;
 	int TILE_SIZE;
 	std::string SAVE_FILE;
+	double FRAC_ARTIFACT;
 
 	SDL_Window* gWindow = NULL;
 	SDL_Renderer* gRenderer = NULL;

@@ -22,6 +22,8 @@ public:
 	virtual ~TextureLoader();
 	Texture& getPersistedTextureWithName(std::string name);
 	Texture& getPersistedTextureFromText(std::string text);
+	std::unique_ptr<Texture> getTextureFromText(std::string text);
+
 
 private:
 	std::unordered_map<std::string, std::unique_ptr<Texture>> imgTextures;

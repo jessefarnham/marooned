@@ -28,5 +28,16 @@ Texture& TextureLoader::getPersistedTextureWithName(std::string name) {
 }
 
 Texture& TextureLoader::getPersistedTextureFromText(std::string text) {
+	if (!textTextures.count(text)) {
+		auto newTexture = getTextureFromText(text);
+		textTextures.insert(std::make_pair(text.c_str(), std::move(newTexture)));
+	}
+	return *textTextures[text];
+}
+
+std::unique_ptr<Texture> TextureLoader::getTextureFromText(std::string text) {
+	auto newTexture = std::make_unique<Texture>(renderer, font);
+	newTexture->loadFromRenderedText(text, {0xff, 0xff, 0xff, 0xff});
+	return newTexture;
 }
 

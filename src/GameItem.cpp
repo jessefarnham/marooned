@@ -6,6 +6,7 @@
  */
 
 #include "GameItem.h"
+#include "artifacts/Bolts.h"
 
 GameItem::GameItem() {
 	// TODO Auto-generated constructor stub
@@ -20,3 +21,13 @@ GameItem::~GameItem() {
 	// TODO Auto-generated destructor stub
 }
 
+std::unique_ptr<GameItem> createGameItem(std::string itemName) {
+	std::unique_ptr<GameItem> gameItem;
+	if (itemName == "Bolts") {
+		gameItem = std::make_unique<Bolts>(0, 0);
+	}
+	else {
+		throw "Unknown item name" + itemName;
+	}
+	return gameItem;
+}

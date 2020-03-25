@@ -8,9 +8,9 @@
 #ifndef IMPASSABLETERRAIN_H_
 #define IMPASSABLETERRAIN_H_
 
-#include "GameItem.h"
+#include "Terrain.h"
 
-class ImpassableTerrain: public GameItem {
+class ImpassableTerrain: public Terrain {
 public:
 	ImpassableTerrain();
 	std::string getTextureName();

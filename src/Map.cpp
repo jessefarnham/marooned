@@ -160,8 +160,22 @@ void Map::saveState(std::ofstream& out) {
 	out << "Map\n";
 	out << playerLoc.first << "\n";
 	out << playerLoc.second << "\n";
+	for (int r = 0; r < size; r++){
+		for (int c = 0; c < size; c++) {
+			if (state[r][c].size() > 1) {
+				out << r;
+				out << c;
+				for (int i = 1; i < state[r][c].size(); i++) {
+					state[r][c][i]->saveState(out);
+				}
+				out << "endloc\n";
+			}
+		}
+	}
+	out << "endmap\n";
 }
 
+//TODO needs update
 void Map::loadState(std::ifstream& in) {
 	std::string line;
 	int playerR;
@@ -169,7 +183,19 @@ void Map::loadState(std::ifstream& in) {
 	getline(in, line); //header
 	in >> playerR;
 	in >> playerC;
-	getline(in, line); //trailing newline
+	std::getline(in, line); //endmap, or row of first location
+	while (line != "endmap") {
+		int objrow, objcol;
+		objrow = std::stoi(line);
+		std::getline(in, line);
+		objcol = std::stoi(line);
+		std::getline(in, line) //endloc, or item name
+		while (line != "endloc") {
+			auto newItem = createGameItem(line);
+			newItem->loadState(in);
+			state[objrow][objcol].push_back(std::move(newItem));
+		}
+	}
 	placePlayer(playerR, playerC);
 }
 

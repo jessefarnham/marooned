@@ -8,10 +8,11 @@
 #ifndef SRC_BAREGROUND_H_
 #define SRC_BAREGROUND_H_
 
-#include "GameItem.h"
 #include <string>
+#include "Terrain.h"
 
-class BareGround : public GameItem {
+
+class BareGround : public Terrain {
 public:
 	BareGround();
 	std::string getTextureName();

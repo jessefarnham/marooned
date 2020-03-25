@@ -15,6 +15,8 @@ public:
 	Bolts(int n, double weightPer);
 	virtual double getWeight();
 	virtual std::string getDescription();
+	virtual void saveState(std::ofstream&);
+	virtual void loadState(std::ifstream&);
 	virtual ~Bolts();
 
 private:

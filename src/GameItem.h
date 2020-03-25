@@ -15,6 +15,7 @@ public:
 	GameItem();
 	virtual std::string getTextureName() = 0;
 	virtual bool getStandable() = 0;
+	virtual int getDrawPriority();
 	virtual ~GameItem();
 };
 

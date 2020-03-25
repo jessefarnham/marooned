@@ -10,6 +10,8 @@ FONT_SIZE
 12
 fracImpassable
 0.2
+fracArtifact
+0.01
 MESSAGE_QUEUE_SIZE
 10
 SAVE_FILE

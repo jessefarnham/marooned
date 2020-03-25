@@ -12,6 +12,10 @@ GameItem::GameItem() {
 
 }
 
+int GameItem::getDrawPriority(){
+	return 0;
+}
+
 GameItem::~GameItem() {
 	// TODO Auto-generated destructor stub
 }

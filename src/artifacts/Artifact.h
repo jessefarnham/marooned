@@ -16,6 +16,7 @@ public:
 	virtual std::string getTextureName();
 	virtual bool getStandable();
 	virtual double getWeight() = 0;
+	virtual int getDrawPriority();
 	virtual ~Artifact();
 };
 

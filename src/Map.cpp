@@ -5,10 +5,13 @@
  *      Author: jesse
  */
 
+#include <climits>
 #include "Map.h"
 #include "BareGround.h"
 #include "ImpassableTerrain.h"
 #include "util.h"
+#include "artifacts/Artifact.h"
+#include "artifacts/Bolts.h"
 
 
 Map::Map(int size, int visibleSize, int tileSize) {
@@ -23,12 +26,13 @@ void Map::createEmpty() {
 		state[r].resize(size);
 		for (int c = 0; c < size; c++) {
 			auto bareGround = std::make_unique<BareGround>();
-			state[r][c] = std::move(bareGround);
+			state[r][c].resize(1);
+			state[r][c][0] = std::move(bareGround);
 		}
 	}
 }
 
-void Map::createRandom(double fracImpassable) {
+void Map::createRandom(double fracImpassable, double fracArtifact) {
 	state.resize(size);
 		for (int r = 0; r < size; r++) {
 			state[r].resize(size);
@@ -40,19 +44,55 @@ void Map::createRandom(double fracImpassable) {
 				else {
 					gameObj = std::make_unique<BareGround>();
 				}
-				state[r][c] = std::move(gameObj);
+				state[r][c].resize(1);
+				state[r][c][0] = std::move(gameObj);
 			}
 		}
+	placeArtifacts(fracArtifact);
+}
+
+void Map::placeArtifacts(double fracArtifact) {
+	for (int r = 0; r < size; r++){
+		for (int c = 0; c < size; c++) {
+			std::unique_ptr<Artifact> artifact;
+			if (util::randFloat() < fracArtifact){
+				artifact = std::make_unique<Bolts>(100, 0.01);
+				state[r][c].push_back(std::move(artifact));
+			}
+		}
+	}
+}
+
+bool Map::isStandable(int r, int c) {
+	for (auto it = state[r][c].begin(); it != state[r][c].end(); it++) {
+		if (!(*it)->getStandable())
+			return false;
+	}
+	return true;
 }
 
 bool Map::placePlayer(int r, int c) {
-	if (state[r][c]->getStandable()) {
+	if (isStandable(r, c)) {
 		playerLoc = std::make_pair(r, c);
 		return true;
 	}
 	else {
 		return false;
 	}
+}
+
+GameItem& Map::getHighestPriorityItem(int r, int c) {
+	int maxPrio = (INT_MIN);
+	int iMax = -1;
+	int i = 0;
+	for (auto it = state[r][c].begin(); it != state[r][c].end(); i++, it++) {
+		int prio = (*it)->getDrawPriority();
+		if (prio > maxPrio) {
+			iMax = i;
+			maxPrio = prio;
+		}
+	}
+	return *state[r][c][iMax];
 }
 
 void Map::render(TextureLoader& textureLoader){
@@ -69,7 +109,7 @@ void Map::render(TextureLoader& textureLoader){
 			  textureToRender = &playerTexture;
 		  }
 		  else if (isInBounds(mapLoc)){
-			  GameItem& itemAtLoc = *state[mapR][mapC];
+			  GameItem& itemAtLoc = getHighestPriorityItem(mapR, mapC);
 			  textureToRender = &textureLoader.getPersistedTextureWithName(itemAtLoc.getTextureName());
 		  }
 		  else {
@@ -103,7 +143,7 @@ bool Map::movePlayerDown() {
 }
 
 bool Map::tryMovePlayer(std::pair<int, int> newLoc) {
-	if (isInBounds(newLoc) && state[newLoc.first][newLoc.second]->getStandable()) {
+	if (isInBounds(newLoc) && isStandable(newLoc.first, newLoc.second)) {
 			placePlayer(newLoc.first, newLoc.second);
 			return true;
 		}

@@ -33,6 +33,7 @@ public:
 private:
 	unsigned int randseed;
 	double fracImpassable;
+	double fracArtifact;
 
 	const std::string CONFIG_FILE = "config.txt";
 	int SCREEN_WIDTH;

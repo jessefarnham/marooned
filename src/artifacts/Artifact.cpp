@@ -20,6 +20,10 @@ bool Artifact::getStandable(){
 	return true;
 }
 
+int Artifact::getDrawPriority(){
+	return 1; //artifacts always draw with higher priority than terrain
+}
+
 Artifact::~Artifact() {
 	// TODO Auto-generated destructor stub
 }

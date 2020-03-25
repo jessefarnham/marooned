@@ -17,7 +17,7 @@
 
 class Map {
 public:
-	Map(int size);
+	Map(int size, int visibleSize);
 	virtual ~Map();
 	void createEmpty();
 	void createRandom(double fracImpassable);
@@ -34,6 +34,7 @@ private:
 	bool tryMovePlayer(std::pair<int, int>);
 	std::vector<std::vector<std::unique_ptr<GameItem>>> state;
 	int size;
+	int visibleSize;
 };
 
 #endif /* SRC_MAP_H_ */

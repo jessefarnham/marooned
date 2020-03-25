@@ -12,8 +12,9 @@
 
 const int TILE_SIZE = 10;
 
-Map::Map(int size) {
+Map::Map(int size, int visibleSize) {
 	this->size = size;
+	this->visibleSize = visibleSize;
 }
 
 void Map::createEmpty() {
@@ -56,19 +57,27 @@ bool Map::placePlayer(int r, int c) {
 
 void Map::render(TextureLoader& textureLoader){
   Texture& playerTexture = textureLoader.getPersistedTextureWithName("player");
-  for (int r = 0; r < size; r++) {
-	  for (int c = 0; c < size; c++) {
+  for (int r = 0; r < visibleSize; r++) {
+	  for (int c = 0; c < visibleSize; c++) {
 		  int locR = r * TILE_SIZE;
 		  int locC = c * TILE_SIZE;
+		  int mapR = playerLoc.first - (visibleSize / 2) + r;
+		  int mapC = playerLoc.second - (visibleSize / 2) + c;
+		  auto mapLoc = std::make_pair(mapR, mapC);
 		  Texture* textureToRender;
-		  if (playerLoc == std::make_pair(r, c)){
+		  if (playerLoc == mapLoc){
 			  textureToRender = &playerTexture;
 		  }
-		  else {
-			  GameItem& itemAtLoc = *state[r][c];
+		  else if (isInBounds(mapLoc)){
+			  GameItem& itemAtLoc = *state[mapR][mapC];
 			  textureToRender = &textureLoader.getPersistedTextureWithName(itemAtLoc.getTextureName());
 		  }
-		  textureToRender->render(locC, locR, TILE_SIZE - 1, TILE_SIZE - 1, 0., NULL, SDL_FLIP_NONE);
+		  else {
+			  textureToRender = NULL;
+		  }
+		  if (textureToRender){
+			  textureToRender->render(locC, locR, TILE_SIZE - 1, TILE_SIZE - 1, 0., NULL, SDL_FLIP_NONE);
+		  }
 	  }
   }
 }

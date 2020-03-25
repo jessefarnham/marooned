@@ -17,10 +17,11 @@
 #include "TextureLoader.h"
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 480;
+const int SCREEN_HEIGHT = 640;
 
-const int MAP_SIZE = 20;
+const int MAP_SIZE = 100;
+const int VISIBLE_MAP_SIZE = 50;
 
 const int FONT_SIZE = 12;
 
@@ -140,9 +141,17 @@ int main( int argc, char* args[] )
 		//Event handler
 		SDL_Event e;
 
-		Map map(MAP_SIZE);
+		Map map(MAP_SIZE, VISIBLE_MAP_SIZE);
 		map.createRandom(FRAC_IMPASSABLE);
-		map.placePlayer(MAP_SIZE / 2, MAP_SIZE / 2);
+		int tryPlayerR = MAP_SIZE / 2;
+		int tryPlayerC = MAP_SIZE / 2;
+		while (!map.placePlayer(tryPlayerR, tryPlayerC)){
+			tryPlayerR++;
+			tryPlayerC++;
+			if (tryPlayerR > MAP_SIZE || tryPlayerC > MAP_SIZE) {
+				throw "Could not find an open spot to place the player";
+			}
+		}
 		TextureLoader textureLoader(gRenderer, gFont);
 
 		//While application is running

@@ -76,7 +76,7 @@ void Map::render(TextureLoader& textureLoader){
 			  textureToRender = NULL;
 		  }
 		  if (textureToRender){
-			  textureToRender->render(locC, locR, TILE_SIZE - 1, TILE_SIZE - 1, 0., NULL, SDL_FLIP_NONE);
+			  textureToRender->render(locC, locR, TILE_SIZE - 1, TILE_SIZE - 1);
 		  }
 	  }
   }

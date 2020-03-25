@@ -34,10 +34,11 @@ class Texture
 		//Set color modulation
 		void setColor( Uint8 red, Uint8 green, Uint8 blue );
 
+		//Renders texture at given point, stretching to width and height
+		void render( int x, int y, int w, int h);
+
 		//Renders texture at given point
-		void render( int x, int y, int w, int h,
-				double angle = 0.0, SDL_Point* center = NULL,
-				SDL_RendererFlip flip = SDL_FLIP_NONE );
+		void render( int x, int y);
 
 		//Gets image dimensions
 		int getWidth();

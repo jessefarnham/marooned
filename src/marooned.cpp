@@ -15,6 +15,7 @@
 #include <cstdlib>
 #include "Map.h"
 #include "TextureLoader.h"
+#include "MessageQueue.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 480;
@@ -26,6 +27,8 @@ const int VISIBLE_MAP_SIZE = 50;
 const int FONT_SIZE = 12;
 
 const double FRAC_IMPASSABLE = 0.2;
+
+const int MESSAGE_QUEUE_SIZE = 10;
 
 //Starts up SDL and creates window
 bool init();
@@ -152,6 +155,7 @@ int main( int argc, char* args[] )
 				throw "Could not find an open spot to place the player";
 			}
 		}
+		MessageQueue mq(MESSAGE_QUEUE_SIZE);
 		TextureLoader textureLoader(gRenderer, gFont);
 
 		//While application is running
@@ -169,9 +173,11 @@ int main( int argc, char* args[] )
 					switch(e.key.keysym.sym) {
 					case SDLK_UP:
 						map.movePlayerUp();
+						mq.postMessage("You went up!");
 						break;
 					case SDLK_DOWN:
 						map.movePlayerDown();
+						mq.postMessage("You went down!");
 						break;
 					case SDLK_LEFT:
 						map.movePlayerLeft();
@@ -206,8 +212,8 @@ int main( int argc, char* args[] )
 			bottomViewport.h = SCREEN_HEIGHT / 4;
 			SDL_RenderSetViewport( gRenderer, &bottomViewport );
 
-			auto textTexture = textureLoader.getTextureFromText("Hello world");
-			textTexture->render(0, 0, textTexture->getWidth(), textTexture->getHeight(), 0, NULL, SDL_FLIP_NONE);
+			mq.render(textureLoader);
+
 
 			//Update screen
 			SDL_RenderPresent( gRenderer );

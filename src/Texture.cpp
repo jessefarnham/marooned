@@ -132,7 +132,7 @@ void Texture::setColor( Uint8 red, Uint8 green, Uint8 blue )
 	SDL_SetTextureColorMod( mTexture, red, green, blue );
 }
 
-void Texture::render( int x, int y, int w, int h, double angle, SDL_Point* center, SDL_RendererFlip flip )
+void Texture::render( int x, int y, int w, int h)
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, w, h };
@@ -142,6 +142,10 @@ void Texture::render( int x, int y, int w, int h, double angle, SDL_Point* cente
 	if (failure) {
 		printf("Unable to render texture! SDLError: %s\n", SDL_GetError() );
 	}
+}
+
+void Texture::render(int x, int y){
+	render(x, y, x + mWidth, x + mHeight);
 }
 
 int Texture::getWidth()

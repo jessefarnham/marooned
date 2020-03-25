@@ -26,8 +26,8 @@ public:
 	void initGame();
 	void close();
 	void mainLoop();
-	void saveState(std::ofstream);
-	void loadState(std::ifstream);
+	void saveState(std::ofstream& file);
+	void loadState(std::ifstream& file);
 	virtual ~Marooned();
 
 private:
@@ -40,6 +40,7 @@ private:
 	const int FONT_SIZE = 12;
 	const double FRAC_IMPASSABLE = 0.2;
 	const int MESSAGE_QUEUE_SIZE = 10;
+	const std::string SAVE_FILE = "savegame.txt";
 
 	SDL_Window* gWindow = NULL;
 	SDL_Renderer* gRenderer = NULL;
@@ -47,6 +48,10 @@ private:
 
 	std::unique_ptr<Map> map;
 	std::unique_ptr<MessageQueue> mq;
+
+	void save();
+
+	void load();
 };
 
 #endif /* MAROONED_H_ */

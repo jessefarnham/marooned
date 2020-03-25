@@ -28,8 +28,8 @@ public:
 	bool movePlayerUp();
 	bool movePlayerDown();
 	void render(TextureLoader&);
-	void saveState(std::ofstream);
-	void loadState(std::ifstream);
+	void saveState(std::ofstream& file);
+	void loadState(std::ifstream& file);
 	std::pair<int, int> playerLoc;
 
 private:

@@ -9,6 +9,7 @@
  */
 
 
+#include <fstream>
 #include "Marooned.h"
 #include "Map.h"
 #include "MessageQueue.h"
@@ -120,6 +121,7 @@ void Marooned::close()
 void Marooned::mainLoop(){
 	//Main loop flag
 	bool quit = false;
+	bool ctrlDown = false;
 
 	//Event handler
 	SDL_Event e;
@@ -141,11 +143,9 @@ void Marooned::mainLoop(){
 				switch(e.key.keysym.sym) {
 				case SDLK_UP:
 					map->movePlayerUp();
-					mq->postMessage("You went up!");
 					break;
 				case SDLK_DOWN:
 					map->movePlayerDown();
-					mq->postMessage("You went down!");
 					break;
 				case SDLK_LEFT:
 					map->movePlayerLeft();
@@ -153,8 +153,30 @@ void Marooned::mainLoop(){
 				case SDLK_RIGHT:
 					map->movePlayerRight();
 					break;
+				case SDLK_LCTRL:
+				case SDLK_RCTRL:
+					ctrlDown = true;
+					break;
+				case SDLK_s:
+					if (ctrlDown){
+						save();
+					}
+					break;
+				case SDLK_l:
+					if (ctrlDown){
+						load();
+					}
+					break;
 				}
 			}
+			else if (e.type == SDL_KEYUP) {
+				switch(e.key.keysym.sym) {
+				case SDLK_LCTRL:
+				case SDLK_RCTRL:
+					ctrlDown = false;
+					break;
+				}
+ 			}
 		}
 
 		//Clear screen
@@ -189,18 +211,41 @@ void Marooned::mainLoop(){
 	}
 }
 
-void Marooned::saveState(std::ofstream out) {
+void Marooned::saveState(std::ofstream& out) {
 	out << "Marooned\n";
 	out << randseed << "\n";
+	map->saveState(out);
+	mq->saveState(out);
 }
 
-void Marooned::loadState(std::ifstream in) {
+void Marooned::loadState(std::ifstream& in) {
 	std::string line;
 	int randseed;
 	getline(in, line); //header
 	in >> randseed;
 	this->randseed = randseed;
+	getline(in, line); //trailing newline
+	map->loadState(in);
+}
 
+void Marooned::save() {
+	std::ofstream out;
+	out.open(SAVE_FILE, std::ios::trunc);
+	saveState(out);
+	out.close();
+	mq->postMessage("Game saved.");
+}
+
+void Marooned::load() {
+	std::ifstream in(SAVE_FILE);
+	if (in.is_open()){
+		loadState(in);
+		mq->postMessage("Game loaded.");
+	}
+	else{
+		mq->postError("Could not open save file " + SAVE_FILE);
+	}
+	in.close();
 }
 
 

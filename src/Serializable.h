@@ -13,8 +13,8 @@
 class Serializable {
 public:
 	Serializable();
-	virtual void saveState(std::ofstream file) = 0;
-	virtual void loadState(std::ifstream file) = 0;
+	virtual void saveState(std::ofstream& file) = 0;
+	virtual void loadState(std::ifstream& file) = 0;
 	virtual ~Serializable();
 };
 

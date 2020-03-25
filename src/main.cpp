@@ -3,8 +3,8 @@
 // Author      : Jesse Farnham
 //============================================================================
 
+#include <string>
 #include "Marooned.h"
-
 
 int main( int argc, char* args[] )
 {

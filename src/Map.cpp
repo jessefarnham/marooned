@@ -116,12 +116,21 @@ bool Map::isInBounds(std::pair<int ,int> loc) {
 	return (loc.first >= 0 && loc.first < size && loc.second >= 0 && loc.second < size);
 }
 
-void Map::saveState(std::ofstream out) {
-
+void Map::saveState(std::ofstream& out) {
+	out << "Map\n";
+	out << playerLoc.first << "\n";
+	out << playerLoc.second << "\n";
 }
 
-void Map::loadState(std::ifstream in) {
-
+void Map::loadState(std::ifstream& in) {
+	std::string line;
+	int playerR;
+	int playerC;
+	getline(in, line); //header
+	in >> playerR;
+	in >> playerC;
+	getline(in, line); //trailing newline
+	placePlayer(playerR, playerC);
 }
 
 Map::~Map() {

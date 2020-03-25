@@ -22,6 +22,10 @@ void MessageQueue::postMessage(std::string text){
 	}
 }
 
+void MessageQueue::postError(std::string text){
+	postMessage("ERROR: " + text);
+}
+
 void MessageQueue::render(TextureLoader& textureLoader){
 	int r = 0;
 	for (auto it = messages.begin(); it != messages.end(); it++) {
@@ -29,4 +33,12 @@ void MessageQueue::render(TextureLoader& textureLoader){
 		messageTexture->render(0, r);
 		r += messageTexture->getHeight();
 	}
+}
+
+void MessageQueue::saveState(std::ofstream& out) {
+
+}
+
+void MessageQueue::loadState(std::ifstream& in) {
+
 }

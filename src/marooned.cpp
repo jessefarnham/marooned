@@ -197,6 +197,9 @@ int main( int argc, char* args[] )
 			bottomViewport.h = SCREEN_HEIGHT / 4;
 			SDL_RenderSetViewport( gRenderer, &bottomViewport );
 
+			auto textTexture = textureLoader.getTextureFromText("Hello world");
+			textTexture->render(0, 0, textTexture->getWidth(), textTexture->getHeight(), 0, NULL, SDL_FLIP_NONE);
+
 			//Update screen
 			SDL_RenderPresent( gRenderer );
 		}

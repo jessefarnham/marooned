@@ -11,12 +11,13 @@ int main( int argc, char* args[] )
 	Marooned game(0);
 
 	//Start up SDL and create window
-	if( !game.init() )
+	if( !game.initSDL() )
 	{
 		printf( "Failed to initialize!\n" );
 	}
 	else
 	{
+		game.initGame();
 		game.mainLoop();
 	}
 

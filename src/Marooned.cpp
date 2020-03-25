@@ -3,7 +3,11 @@
  *
  *  Created on: Mar 25, 2020
  *      Author: jesse
+ *
+ *  The boilerplate for this largely comes from Lazy Foo' Productions' SDL tutorial, found at
+ *  http://lazyfoo.net/tutorials/SDL/index.php
  */
+
 
 #include "Marooned.h"
 #include "Map.h"
@@ -14,7 +18,7 @@ Marooned::Marooned(unsigned int randseed) {
 	srand(randseed);
 }
 
-bool Marooned::init()
+bool Marooned::initSDL()
 {
 	//Initialization flag
 		bool success = true;
@@ -82,6 +86,22 @@ bool Marooned::init()
 		return success;
 }
 
+void Marooned::initGame(){
+	map = std::make_unique<Map>(MAP_SIZE, VISIBLE_MAP_SIZE);
+	map->createRandom(FRAC_IMPASSABLE);
+	int tryPlayerR = MAP_SIZE / 2;
+	int tryPlayerC = MAP_SIZE / 2;
+	while (!map->placePlayer(tryPlayerR, tryPlayerC)){
+		tryPlayerR++;
+		tryPlayerC++;
+		if (tryPlayerR > MAP_SIZE || tryPlayerC > MAP_SIZE) {
+			throw "Could not find an open spot to place the player";
+		}
+	}
+	mq = std::make_unique<MessageQueue>(MESSAGE_QUEUE_SIZE);
+
+}
+
 void Marooned::close()
 {
 	//Free loaded image
@@ -104,18 +124,6 @@ void Marooned::mainLoop(){
 	//Event handler
 	SDL_Event e;
 
-	Map map(MAP_SIZE, VISIBLE_MAP_SIZE);
-	map.createRandom(FRAC_IMPASSABLE);
-	int tryPlayerR = MAP_SIZE / 2;
-	int tryPlayerC = MAP_SIZE / 2;
-	while (!map.placePlayer(tryPlayerR, tryPlayerC)){
-		tryPlayerR++;
-		tryPlayerC++;
-		if (tryPlayerR > MAP_SIZE || tryPlayerC > MAP_SIZE) {
-			throw "Could not find an open spot to place the player";
-		}
-	}
-	MessageQueue mq(MESSAGE_QUEUE_SIZE);
 	TextureLoader textureLoader(gRenderer, gFont);
 
 	//While application is running
@@ -132,18 +140,18 @@ void Marooned::mainLoop(){
 			else if (e.type == SDL_KEYDOWN) {
 				switch(e.key.keysym.sym) {
 				case SDLK_UP:
-					map.movePlayerUp();
-					mq.postMessage("You went up!");
+					map->movePlayerUp();
+					mq->postMessage("You went up!");
 					break;
 				case SDLK_DOWN:
-					map.movePlayerDown();
-					mq.postMessage("You went down!");
+					map->movePlayerDown();
+					mq->postMessage("You went down!");
 					break;
 				case SDLK_LEFT:
-					map.movePlayerLeft();
+					map->movePlayerLeft();
 					break;
 				case SDLK_RIGHT:
-					map.movePlayerRight();
+					map->movePlayerRight();
 					break;
 				}
 			}
@@ -162,7 +170,7 @@ void Marooned::mainLoop(){
 		SDL_RenderSetViewport( gRenderer, &topViewport );
 
 		//Render map
-		map.render(textureLoader);
+		map->render(textureLoader);
 
 		//Bottom viewport
 		SDL_Rect bottomViewport;
@@ -172,12 +180,27 @@ void Marooned::mainLoop(){
 		bottomViewport.h = SCREEN_HEIGHT / 4;
 		SDL_RenderSetViewport( gRenderer, &bottomViewport );
 
-		mq.render(textureLoader);
+		//Render message queue
+		mq->render(textureLoader);
 
 
 		//Update screen
 		SDL_RenderPresent( gRenderer );
 	}
+}
+
+void Marooned::saveState(std::ofstream out) {
+	out << "Marooned\n";
+	out << randseed << "\n";
+}
+
+void Marooned::loadState(std::ifstream in) {
+	std::string line;
+	int randseed;
+	getline(in, line); //header
+	in >> randseed;
+	this->randseed = randseed;
+
 }
 
 

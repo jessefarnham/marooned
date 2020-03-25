@@ -14,13 +14,20 @@
 #include <stdio.h>
 #include <string>
 #include <cstdlib>
+#include <memory>
+#include "Serializable.h"
+#include "Map.h"
+#include "MessageQueue.h"
 
-class Marooned {
+class Marooned : public Serializable {
 public:
 	Marooned(unsigned int randseed);
-	bool init();
+	bool initSDL();
+	void initGame();
 	void close();
 	void mainLoop();
+	void saveState(std::ofstream);
+	void loadState(std::ifstream);
 	virtual ~Marooned();
 
 private:
@@ -37,6 +44,9 @@ private:
 	SDL_Window* gWindow = NULL;
 	SDL_Renderer* gRenderer = NULL;
 	TTF_Font* gFont = NULL;
+
+	std::unique_ptr<Map> map;
+	std::unique_ptr<MessageQueue> mq;
 };
 
 #endif /* MAROONED_H_ */

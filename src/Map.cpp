@@ -32,23 +32,28 @@ void Map::createEmpty() {
 	}
 }
 
-void Map::createRandom(double fracImpassable, double fracArtifact) {
+void Map::createRandomTerrain(double fracImpassable) {
 	state.resize(size);
-		for (int r = 0; r < size; r++) {
-			state[r].resize(size);
-			for (int c = 0; c < size; c++) {
-				std::unique_ptr<GameItem> gameObj;
-				if (util::randFloat() < fracImpassable) {
-					gameObj = std::make_unique<ImpassableTerrain>();
-				}
-				else {
-					gameObj = std::make_unique<BareGround>();
-				}
-				state[r][c].resize(1);
-				state[r][c][0] = std::move(gameObj);
+	for (int r = 0; r < size; r++) {
+		state[r].resize(size);
+		for (int c = 0; c < size; c++) {
+			std::unique_ptr<GameItem> gameObj;
+			if (util::randFloat() < fracImpassable) {
+				gameObj = std::make_unique<ImpassableTerrain>();
 			}
+			else {
+				gameObj = std::make_unique<BareGround>();
+			}
+			state[r][c].resize(1);
+			state[r][c][0] = std::move(gameObj);
 		}
+	}
+}
+
+void Map::createRandom(double fracImpassable, double fracArtifact) {
+	createRandomTerrain(fracImpassable);
 	placeArtifacts(fracArtifact);
+	this->fracImpassable = fracImpassable;
 }
 
 void Map::placeArtifacts(double fracArtifact) {
@@ -160,12 +165,13 @@ void Map::saveState(std::ofstream& out) {
 	out << "Map\n";
 	out << playerLoc.first << "\n";
 	out << playerLoc.second << "\n";
+	out << fracImpassable << "\n";
 	for (int r = 0; r < size; r++){
 		for (int c = 0; c < size; c++) {
 			if (state[r][c].size() > 1) {
-				out << r;
-				out << c;
-				for (int i = 1; i < state[r][c].size(); i++) {
+				out << r << "\n";
+				out << c << "\n";
+				for (int i = 1; i < (int) state[r][c].size(); i++) {
 					state[r][c][i]->saveState(out);
 				}
 				out << "endloc\n";
@@ -175,26 +181,31 @@ void Map::saveState(std::ofstream& out) {
 	out << "endmap\n";
 }
 
-//TODO needs update
 void Map::loadState(std::ifstream& in) {
 	std::string line;
 	int playerR;
 	int playerC;
+	double fracImpassable;
 	getline(in, line); //header
 	in >> playerR;
 	in >> playerC;
+	in >> fracImpassable;
+	std::getline(in, line); //trailing newline
 	std::getline(in, line); //endmap, or row of first location
+	createRandomTerrain(fracImpassable);
 	while (line != "endmap") {
 		int objrow, objcol;
 		objrow = std::stoi(line);
 		std::getline(in, line);
 		objcol = std::stoi(line);
-		std::getline(in, line) //endloc, or item name
+		std::getline(in, line); //endloc, or item name
 		while (line != "endloc") {
 			auto newItem = createGameItem(line);
 			newItem->loadState(in);
 			state[objrow][objcol].push_back(std::move(newItem));
+			std::getline(in, line); //endloc, or item name
 		}
+		std::getline(in, line); //endmap, or row of next location
 	}
 	placePlayer(playerR, playerC);
 }

@@ -38,12 +38,14 @@ private:
 	bool isInBounds(std::pair<int, int>);
 	bool tryMovePlayer(std::pair<int, int>);
 	bool isStandable(int r, int c);
-	void placeArtifacts(double fractArtifact);
+	void placeArtifacts(double fracArtifact);
+	void createRandomTerrain(double fracImpassable);
 	GameItem& getHighestPriorityItem(int r, int c);
 	std::vector<std::vector<std::vector<std::unique_ptr<GameItem>>>> state;
 	int size;
 	int visibleSize;
 	int tileSize;
+	double fracImpassable;
 };
 
 #endif /* SRC_MAP_H_ */

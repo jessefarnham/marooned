@@ -21,15 +21,15 @@ std::string Bolts::getDescription(){
 }
 
 void Bolts::saveState(std::ofstream& out) {
-	out << "Bolts";
-	out << n;
-	out << weightPer;
+	out << "Bolts\n";
+	out << n << "\n";
+	out << weightPer << "\n";
 }
 
 void Bolts::loadState(std::ifstream& in) {
 	std::string line;
 	int n;
-	int weightPer;
+	double weightPer;
 	in >> n;
 	in >> weightPer;
 	getline(in, line); //trailing newline

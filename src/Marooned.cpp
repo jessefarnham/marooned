@@ -91,7 +91,7 @@ bool Marooned::initSDL()
 
 void Marooned::initGame(){
 	map = std::make_unique<Map>(MAP_SIZE, VISIBLE_MAP_SIZE, TILE_SIZE);
-	map->createRandom(fracImpassable, FRAC_ARTIFACT);
+	map->createRandom(FRAC_IMPASSABLE, FRAC_ARTIFACT);
 	int tryPlayerR = MAP_SIZE / 2;
 	int tryPlayerC = MAP_SIZE / 2;
 	while (!map->placePlayer(tryPlayerR, tryPlayerC)){
@@ -127,7 +127,7 @@ void Marooned::initConfig(){
 		TILE_SIZE = std::stoi(configs["TILE_SIZE"]);
 		FRAC_ARTIFACT = std::stod(configs["FRAC_ARTIFACT"]);
 
-		fracImpassable = std::stod(configs["fracImpassable"]);
+		FRAC_IMPASSABLE = std::stod(configs["FRAC_IMPASSABLE"]);
 	}
 	else {
 		throw "Could not load config file " + CONFIG_FILE;
@@ -249,7 +249,6 @@ void Marooned::mainLoop(){
 void Marooned::saveState(std::ofstream& out) {
 	out << "Marooned\n";
 	out << randseed << "\n";
-	out << fracImpassable << "\n";
 	map->saveState(out);
 	mq->saveState(out);
 }
@@ -257,12 +256,10 @@ void Marooned::saveState(std::ofstream& out) {
 void Marooned::loadState(std::ifstream& in) {
 	std::string line;
 	int randseed;
-	int fracImpassable;
 	getline(in, line); //header
 	in >> randseed;
-	in >> fracImpassable;
 	this->randseed = randseed;
-	this->fracImpassable = fracImpassable;
+	srand(randseed);
 	getline(in, line); //trailing newline
 	map->loadState(in);
 }

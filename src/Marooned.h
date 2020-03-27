@@ -32,7 +32,6 @@ public:
 
 private:
 	unsigned int randseed;
-	double fracImpassable;
 
 	const std::string CONFIG_FILE = "config.txt";
 	int SCREEN_WIDTH;
@@ -44,6 +43,7 @@ private:
 	int TILE_SIZE;
 	std::string SAVE_FILE;
 	double FRAC_ARTIFACT;
+	double FRAC_IMPASSABLE;
 
 	SDL_Window* gWindow = NULL;
 	SDL_Renderer* gRenderer = NULL;

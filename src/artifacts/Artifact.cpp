@@ -32,3 +32,15 @@ Artifact::~Artifact() {
 	// TODO Auto-generated destructor stub
 }
 
+std::unique_ptr<Artifact> toArtifact(std::unique_ptr<GameItem> gi){
+	Artifact* tmpArtifact = dynamic_cast<Artifact*>(gi.get());
+	std::unique_ptr<Artifact> uniqueArtifact;
+	if(tmpArtifact != nullptr)
+	{
+	    gi.release();
+	    uniqueArtifact.reset(tmpArtifact);
+	}
+	return uniqueArtifact;
+}
+
+

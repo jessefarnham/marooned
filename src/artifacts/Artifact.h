@@ -21,4 +21,6 @@ public:
 	virtual ~Artifact();
 };
 
+std::unique_ptr<Artifact> toArtifact(std::unique_ptr<GameItem>);
+
 #endif /* ARTIFACT_H_ */

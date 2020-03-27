@@ -65,6 +65,7 @@ void Player::loadState(std::ifstream& in){
 	in >> food;
 	in >> water;
 	in >> baseMaxCarry;
+	std::getline(in, line); //header
 	inventory.loadState(in);
 	std::getline(in, line); // trailing newline
 }

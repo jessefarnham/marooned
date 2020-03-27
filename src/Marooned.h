@@ -44,6 +44,7 @@ private:
 	std::string SAVE_FILE;
 	double FRAC_ARTIFACT;
 	double FRAC_IMPASSABLE;
+	double MAX_BASE_CARRY;
 
 	SDL_Window* gWindow = NULL;
 	SDL_Renderer* gRenderer = NULL;

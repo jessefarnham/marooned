@@ -15,11 +15,12 @@
 #include "TextureLoader.h"
 #include "Serializable.h"
 #include "MessageQueue.h"
+#include "Player.h"
 
 
 class Map : public Serializable {
 public:
-	Map(int size, int visibleSize, int tileSize);
+	Map(int size, int visibleSize, int tileSize, double baseMaxCarry);
 	virtual ~Map();
 	void createEmpty();
 	void createRandom(double fracImpassable, double fracArtifact);
@@ -42,6 +43,7 @@ private:
 	void createRandomTerrain(double fracImpassable);
 	GameItem& getHighestPriorityItem(int r, int c);
 	std::vector<std::vector<std::vector<std::unique_ptr<GameItem>>>> state;
+	Player player;
 	int size;
 	int visibleSize;
 	int tileSize;

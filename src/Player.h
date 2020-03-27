@@ -13,8 +13,9 @@
 #include <fstream>
 #include "artifacts/Artifact.h"
 #include "Inventory.h"
+#include "Serializable.h"
 
-class Player {
+class Player : public Serializable {
 public:
 	Player(double baseMaxCarry);
 	virtual ~Player();

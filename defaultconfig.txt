@@ -18,3 +18,5 @@ SAVE_FILE
 savegame.txt
 TILE_SIZE
 10
+MAX_BASE_CARRY
+50

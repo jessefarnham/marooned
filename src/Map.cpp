@@ -14,7 +14,9 @@
 #include "artifacts/Bolts.h"
 
 
-Map::Map(int size, int visibleSize, int tileSize) {
+Map::Map(int size, int visibleSize, int tileSize, double baseMaxCarry) :
+	player(baseMaxCarry)
+{
 	this->size = size;
 	this->visibleSize = visibleSize;
 	this->tileSize = tileSize;
@@ -179,6 +181,7 @@ void Map::saveState(std::ofstream& out) {
 		}
 	}
 	out << "endmap\n";
+	player.saveState(out);
 }
 
 void Map::loadState(std::ifstream& in) {
@@ -207,6 +210,7 @@ void Map::loadState(std::ifstream& in) {
 		}
 		std::getline(in, line); //endmap, or row of next location
 	}
+	player.loadState(in);
 	placePlayer(playerR, playerC);
 }
 

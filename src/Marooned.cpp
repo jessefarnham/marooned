@@ -130,6 +130,7 @@ void Marooned::initConfig(){
 		FRAC_ARTIFACT = std::stod(configs["FRAC_ARTIFACT"]);
 		FRAC_IMPASSABLE = std::stod(configs["FRAC_IMPASSABLE"]);
 		MAX_BASE_CARRY = std::stod(configs["MAX_BASE_CARRY"]);
+		KEYMAP_FILE = configs["KEYMAP_FILE"];
 	}
 	else {
 		throw "Could not load config file " + CONFIG_FILE;
@@ -155,7 +156,6 @@ void Marooned::close()
 void Marooned::mainLoop(){
 	//Main loop flag
 	bool quit = false;
-	bool ctrlDown = false;
 
 	//Event handler
 	SDL_Event e;
@@ -163,11 +163,15 @@ void Marooned::mainLoop(){
 	TextureLoader textureLoader(gRenderer, gFont);
 
 	//Set up FSM control events
-	ControlFSM fsm;
+	ControlFSM fsm(KEYMAP_FILE);
 	fsm.registerAction(START_STATE, MOVE_UP,
 			[this](ControlFSMEvent& e) {this->map->movePlayerUp();});
 	fsm.registerAction(START_STATE, MOVE_LEFT,
 			[this](ControlFSMEvent& e) {this->map->movePlayerLeft();});
+	fsm.registerAction(START_STATE, MOVE_RIGHT,
+			[this](ControlFSMEvent& e) {this->map->movePlayerRight();});
+	fsm.registerAction(START_STATE, MOVE_DOWN,
+			[this](ControlFSMEvent& e) {this->map->movePlayerDown();});
 	fsm.registerAction(START_STATE, EXAMINE,
 			[this](ControlFSMEvent& e) {this->map->examine(*(this->mq));});
 	fsm.registerAction(CTRL_DOWN, SAVE,
@@ -191,47 +195,6 @@ void Marooned::mainLoop(){
 			else {
 				fsm.processEvent(e);
 			}
-//			else if (e.type == SDL_KEYDOWN) {
-//				switch(e.key.keysym.sym) {
-//				case SDLK_UP:
-//					map->movePlayerUp();
-//					break;
-//				case SDLK_DOWN:
-//					map->movePlayerDown();
-//					break;
-//				case SDLK_LEFT:
-//					map->movePlayerLeft();
-//					break;
-//				case SDLK_RIGHT:
-//					map->movePlayerRight();
-//					break;
-//				case SDLK_LCTRL:
-//				case SDLK_RCTRL:
-//					ctrlDown = true;
-//					break;
-//				case SDLK_s:
-//					if (ctrlDown){
-//						save();
-//					}
-//					break;
-//				case SDLK_l:
-//					if (ctrlDown){
-//						load();
-//					}
-//					break;
-//				case SDLK_e:
-//					map->examine(*mq);
-//					break;
-//				}
-//			}
-//			else if (e.type == SDL_KEYUP) {
-//				switch(e.key.keysym.sym) {
-//				case SDLK_LCTRL:
-//				case SDLK_RCTRL:
-//					ctrlDown = false;
-//					break;
-//				}
-// 			}
 		}
 
 		//Clear screen

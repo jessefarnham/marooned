@@ -49,7 +49,7 @@ string DropState::react(ControlFSMEvent& evt) {
 	return START_STATE;
 }
 
-ControlFSM::ControlFSM() {
+ControlFSM::ControlFSM(string keymapFile) : keymap(keymapFile){
 	auto startState = make_shared<StartState>();
 	nameToState.insert(make_pair(startState->name, startState));
 	auto s = make_shared<CtrlDownState>();
@@ -66,50 +66,23 @@ void ControlFSM::registerAction(string stateName, string eventName, EventFunc ac
 }
 
 void ControlFSM::processEvent(SDL_Event& e) {
-	unique_ptr<ControlFSMEvent> event;
+	string eventName = "";
+	char sym = 0;
 	if (e.type == SDL_KEYDOWN) {
-		int sym = e.key.keysym.sym;
-		switch (sym) {
-		case SDLK_UP:
-			event = make_unique<ControlFSMEvent>(MOVE_UP, sym);
-			break;
-		case SDLK_LEFT:
-			event = make_unique<ControlFSMEvent>(MOVE_LEFT, sym);
-			break;
-		case SDLK_e:
-			event = make_unique<ControlFSMEvent>(EXAMINE, sym);
-			break;
-		case SDLK_LCTRL:
-		case SDLK_RCTRL:
-			event = make_unique<ControlFSMEvent>(CTRL_DOWN_EVT, sym);
-			break;
-		case SDLK_s:
-			event = make_unique<ControlFSMEvent>(SAVE, sym);
-			break;
-		case SDLK_p:
-			event = make_unique<ControlFSMEvent>(PICK_UP_EVT, sym);
-			break;
-		case SDLK_d:
-			event = make_unique<ControlFSMEvent>(DROP_EVT, sym);
-			break;
-		case SDLK_0:
-		case SDLK_1:
-		case SDLK_2:
-			event = make_unique<ControlFSMEvent>(NUM_KEY_DOWN, sym);
-			break;
-		}
+		sym = e.key.keysym.sym;
+		eventName = keymap.getEventName(sym);
 	}
 	else if (e.type == SDL_KEYUP) {
-		switch(e.key.keysym.sym) {
-		case SDLK_LCTRL:
-		case SDLK_RCTRL:
-			event = make_unique<ControlFSMEvent>(CTRL_UP_EVT, e.key.keysym.sym);
-			break;
+		sym = e.key.keysym.sym;
+		if (sym == SDLK_LCTRL || sym == SDLK_RCTRL){
+			eventName = CTRL_UP_EVT;
 		}
 	 }
-	if (event){
-		if (stateEventToAction.count(currentState->name + "#" + event->name)){
-			stateEventToAction[currentState->name + "#" + event->name](*event);
+	if (eventName.length()){
+		unique_ptr<ControlFSMEvent> event = make_unique<ControlFSMEvent>(eventName, sym);
+		string stateEventHash = currentState->name + "#" + event->name;
+		if (stateEventToAction.count(stateEventHash)){
+			stateEventToAction[stateEventHash](*event);
 		}
 		currentState = nameToState[currentState->react(*event)];
 	}

@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <SDL2/SDL.h>
 #include <functional>
+#include "KeyMap.h"
 
 using namespace std;
 
@@ -23,12 +24,14 @@ const string DROP = "DROP";
 
 const string MOVE_UP = "MOVE_UP";
 const string MOVE_LEFT = "MOVE_LEFT";
+const string MOVE_RIGHT = "MOVE_RIGHT";
+const string MOVE_DOWN = "MOVE_DOWN";
 const string EXAMINE = "EXAMINE";
 const string SAVE = "SAVE";
 const string CTRL_DOWN_EVT = "CTRL_DOWN_EVT";
 const string CTRL_UP_EVT = "CTRL_UP_EVT";
 const string PICK_UP_EVT = "PICK_UP_EVT";
-const string DROP_EVT = "DROP";
+const string DROP_EVT = "DROP_EVT";
 const string NUM_KEY_DOWN = "NUM_KEY_DOWN";
 
 
@@ -78,13 +81,14 @@ typedef function<void(ControlFSMEvent&)> EventFunc;
 
 class ControlFSM {
 public:
-	ControlFSM();
+	ControlFSM(string keymapFile);
 	void registerAction(string stateName, string eventName, EventFunc action);
 	void processEvent(SDL_Event& e);
 private:
 	shared_ptr<ControlFSMState> currentState;
 	unordered_map<string, shared_ptr<ControlFSMState>> nameToState;
 	unordered_map<string, EventFunc> stateEventToAction;
+	KeyMap keymap;
 };
 
 #endif /* CONTROLFSM_H_ */

@@ -42,6 +42,7 @@ private:
 	int MESSAGE_QUEUE_SIZE;
 	int TILE_SIZE;
 	std::string SAVE_FILE;
+	std::string KEYMAP_FILE;
 	double FRAC_ARTIFACT;
 	double FRAC_IMPASSABLE;
 	double MAX_BASE_CARRY;

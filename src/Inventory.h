@@ -14,6 +14,8 @@
 #include "Serializable.h"
 #include "artifacts/Artifact.h"
 
+using namespace std;
+
 class Inventory : public Serializable {
 public:
 	Inventory();
@@ -25,6 +27,7 @@ public:
 	void saveState(std::ofstream&);
 	void loadState(std::ifstream&);
 	int getSize();
+	Artifact& get(int);
 private:
 	std::vector<std::unique_ptr<Artifact>> items;
 	double weight;

@@ -9,6 +9,8 @@
 #include "GameItem.h"
 #include "artifacts/Artifact.h"
 
+using namespace std;
+
 
 Inventory::Inventory() {
 	weight = 0;
@@ -63,7 +65,12 @@ void Inventory::loadState(std::ifstream& in) {
 	std::getline(in, line); //EndInventory or first item name
 	while (line != "EndInventory") {
 		auto item = toArtifact(createGameItem(line));
+		item->loadState(in);
 		add(std::move(item));
 		std::getline(in, line); //EndInventory or next item name
 	}
+}
+
+Artifact& Inventory::get(int i){
+	return *(items[i]);
 }

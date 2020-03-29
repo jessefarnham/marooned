@@ -34,6 +34,7 @@ const string CTRL_UP_EVT = "CTRL_UP_EVT";
 const string PICK_UP_EVT = "PICK_UP_EVT";
 const string DROP_EVT = "DROP_EVT";
 const string NUM_KEY_DOWN = "NUM_KEY_DOWN";
+const string SHOW_INVENTORY = "SHOW_INVENTORY";
 
 
 class ControlFSMEvent {

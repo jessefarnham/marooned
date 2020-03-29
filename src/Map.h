@@ -35,6 +35,7 @@ public:
 	void examine(MessageQueue& mq);
 	bool tryPickUp(int itemIndex);
 	bool drop(int itemIndex);
+	void showInventory(MessageQueue& mq);
 	std::pair<int, int> playerLoc;
 
 private:

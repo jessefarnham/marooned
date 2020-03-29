@@ -182,6 +182,8 @@ void Marooned::mainLoop(){
 			[this](ControlFSMEvent& e) {this->map->tryPickUp(e.getNum());});
 	fsm.registerAction(DROP, NUM_KEY_DOWN,
 			[this](ControlFSMEvent& e) {this->map->drop(e.getNum());});
+	fsm.registerAction(START_STATE, SHOW_INVENTORY,
+			[this](ControlFSMEvent& e) {this->map->showInventory(*(this->mq));});
 
 	//While application is running
 	while( !quit )

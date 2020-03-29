@@ -26,12 +26,12 @@ public:
 	std::unique_ptr<Artifact> drop(int itemIndex);
 	void saveState(std::ofstream&);
 	void loadState(std::ifstream&);
+	Inventory inventory;
 private:
 	int health;
 	int food;
 	int water;
 	double baseMaxCarry;
-	Inventory inventory;
 	double getMaxCarryWeight();
 };
 

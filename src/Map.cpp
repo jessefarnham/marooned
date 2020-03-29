@@ -252,6 +252,13 @@ void Map::examine(MessageQueue& mq){
 	}
 }
 
+void Map::showInventory(MessageQueue& mq){
+	mq.postMessage("Your inventory:");
+	for (int i = 0; i < player.inventory.getSize(); ++i){
+		mq.postMessage(to_string(i) + ": " + player.inventory.get(i).getDescription());
+	}
+}
+
 Map::~Map() {
 }
 

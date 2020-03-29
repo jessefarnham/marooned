@@ -10,6 +10,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <SDL2/SDL.h>
 
 using namespace std;
 
@@ -17,9 +18,9 @@ class KeyMap {
 public:
 	KeyMap(string filename);
 	virtual ~KeyMap();
-	string getEventName(char key);
+	string getEventName(SDL_Keycode key);
 private:
-	unordered_map<char, string> keyToEventName;
+	unordered_map<SDL_Keycode, string> keyToEventName;
 };
 
 #endif /* KEYMAP_H_ */

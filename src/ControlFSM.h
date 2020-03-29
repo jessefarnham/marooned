@@ -28,6 +28,7 @@ const string MOVE_RIGHT = "MOVE_RIGHT";
 const string MOVE_DOWN = "MOVE_DOWN";
 const string EXAMINE = "EXAMINE";
 const string SAVE = "SAVE";
+const string LOAD = "LOAD";
 const string CTRL_DOWN_EVT = "CTRL_DOWN_EVT";
 const string CTRL_UP_EVT = "CTRL_UP_EVT";
 const string PICK_UP_EVT = "PICK_UP_EVT";

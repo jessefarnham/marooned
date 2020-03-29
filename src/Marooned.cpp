@@ -176,6 +176,8 @@ void Marooned::mainLoop(){
 			[this](ControlFSMEvent& e) {this->map->examine(*(this->mq));});
 	fsm.registerAction(CTRL_DOWN, SAVE,
 			[this](ControlFSMEvent& e) {this->save();});
+	fsm.registerAction(CTRL_DOWN, LOAD,
+			[this](ControlFSMEvent& e) {this->load();});
 	fsm.registerAction(PICK_UP, NUM_KEY_DOWN,
 			[this](ControlFSMEvent& e) {this->map->tryPickUp(e.getNum());});
 	fsm.registerAction(DROP, NUM_KEY_DOWN,

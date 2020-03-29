@@ -25,15 +25,15 @@ KeyMap::KeyMap(string filename) {
 	in.close();
 }
 
-string KeyMap::getEventName(char key) {
+string KeyMap::getEventName(SDL_Keycode key) {
 	if (key >= '0' && key <= '9'){
 		return NUM_KEY_DOWN;
 	}
 	else if (key == SDLK_LCTRL || key == SDLK_RCTRL){
 		return CTRL_DOWN_EVT;
 	}
-	else if (keyToEventName.count(key)){
-		return keyToEventName[key];
+	else if (keyToEventName.count(key % 128)){
+		return keyToEventName[key % 128];
 	}
 	else {
 		return "";

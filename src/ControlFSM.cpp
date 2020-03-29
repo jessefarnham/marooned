@@ -67,7 +67,7 @@ void ControlFSM::registerAction(string stateName, string eventName, EventFunc ac
 
 void ControlFSM::processEvent(SDL_Event& e) {
 	string eventName = "";
-	char sym = 0;
+	SDL_Keycode sym = 0;
 	if (e.type == SDL_KEYDOWN) {
 		sym = e.key.keysym.sym;
 		eventName = keymap.getEventName(sym);

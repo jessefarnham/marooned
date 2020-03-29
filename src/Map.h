@@ -33,6 +33,8 @@ public:
 	void saveState(std::ofstream& file);
 	void loadState(std::ifstream& file);
 	void examine(MessageQueue& mq);
+	bool tryPickUp(int itemIndex);
+	bool drop(int itemIndex);
 	std::pair<int, int> playerLoc;
 
 private:

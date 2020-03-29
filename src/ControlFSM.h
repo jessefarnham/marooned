@@ -18,6 +18,8 @@ using namespace std;
 
 const string START_STATE = "START";
 const string CTRL_DOWN = "CTRL_DOWN";
+const string PICK_UP = "PICK_UP";
+const string DROP = "DROP";
 
 const string MOVE_UP = "MOVE_UP";
 const string MOVE_LEFT = "MOVE_LEFT";
@@ -25,20 +27,19 @@ const string EXAMINE = "EXAMINE";
 const string SAVE = "SAVE";
 const string CTRL_DOWN_EVT = "CTRL_DOWN_EVT";
 const string CTRL_UP_EVT = "CTRL_UP_EVT";
+const string PICK_UP_EVT = "PICK_UP_EVT";
+const string DROP_EVT = "DROP";
 const string NUM_KEY_DOWN = "NUM_KEY_DOWN";
 
 
 class ControlFSMEvent {
 public:
-	ControlFSMEvent(string name) : name(name) {};
+	ControlFSMEvent(string name, int keycode) : name(name), keycode(keycode) {};
 	virtual ~ControlFSMEvent() {};
 	const string name;
-};
-
-class NumKeyDownEvent : public ControlFSMEvent {
-public:
-	NumKeyDownEvent(char keycode) : ControlFSMEvent(NUM_KEY_DOWN), num(keycode - '0') {};
-	const int num;
+	bool isNumKey();
+	int getNum();
+	const int keycode;
 };
 
 class ControlFSMState {
@@ -58,6 +59,18 @@ public:
 class CtrlDownState : public ControlFSMState {
 public:
 	CtrlDownState() : ControlFSMState(CTRL_DOWN) {};
+	string react(ControlFSMEvent&);
+};
+
+class PickUpState : public ControlFSMState {
+public:
+	PickUpState() : ControlFSMState(PICK_UP) {};
+	string react(ControlFSMEvent&);
+};
+
+class DropState : public ControlFSMState {
+public:
+	DropState() : ControlFSMState(DROP) {};
 	string react(ControlFSMEvent&);
 };
 

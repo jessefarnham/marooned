@@ -24,6 +24,7 @@ public:
 	double getWeight();
 	void saveState(std::ofstream&);
 	void loadState(std::ifstream&);
+	int getSize();
 private:
 	std::vector<std::unique_ptr<Artifact>> items;
 	double weight;

@@ -35,18 +35,23 @@ int Player::getWaterStatus(){
 	return water;
 }
 
-bool Player::pickUp(std::unique_ptr<Artifact> item){
+std::unique_ptr<Artifact> Player::pickUp(std::unique_ptr<Artifact> item){
 	if (inventory.getWeightIfAdd(*item) <= getMaxCarryWeight()) {
 		inventory.add(std::move(item));
-		return true;
+		return nullptr;
 	}
 	else {
-		return false;
+		return std::move(item);
 	}
 }
 
 std::unique_ptr<Artifact> Player::drop(int itemIndex){
-	return std::move(inventory.drop(itemIndex));
+	if (itemIndex >= 0 && itemIndex < inventory.getSize()){
+		return std::move(inventory.drop(itemIndex));
+	}
+	else{
+		return nullptr;
+	}
 }
 
 void Player::saveState(std::ofstream& out) {

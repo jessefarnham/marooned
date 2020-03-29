@@ -52,6 +52,10 @@ void Inventory::clear() {
 	items.clear();
 }
 
+int Inventory::getSize(){
+	return items.size();
+}
+
 void Inventory::loadState(std::ifstream& in) {
 	clear();
 	std::string line;

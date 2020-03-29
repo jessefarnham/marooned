@@ -184,6 +184,36 @@ void Map::saveState(std::ofstream& out) {
 	player.saveState(out);
 }
 
+bool Map::tryPickUp(int itemIndex){
+	auto& items = state[playerLoc.first][playerLoc.second];
+	if (itemIndex > 0 && itemIndex < (int) items.size()){
+		auto artifact = player.pickUp(toArtifact(std::move(items[itemIndex])));
+		if (artifact){
+			//Could not pick up; put it back
+			items[itemIndex] = std::move(artifact);
+			return false;
+		}
+		else {
+			//Picked it up; remove from map
+			items.erase(items.begin() + itemIndex);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Map::drop(int itemIndex) {
+	auto droppedItem = player.drop(itemIndex);
+	if (droppedItem){
+		auto& items = state[playerLoc.first][playerLoc.second];
+		items.push_back(std::move(droppedItem));
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 void Map::loadState(std::ifstream& in) {
 	std::string line;
 	int playerR;

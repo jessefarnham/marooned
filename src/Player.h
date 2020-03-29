@@ -22,7 +22,7 @@ public:
 	int getHealth();
 	int getFoodStatus();
 	int getWaterStatus();
-	bool pickUp(std::unique_ptr<Artifact>);
+	std::unique_ptr<Artifact> pickUp(std::unique_ptr<Artifact>);
 	std::unique_ptr<Artifact> drop(int itemIndex);
 	void saveState(std::ofstream&);
 	void loadState(std::ifstream&);
